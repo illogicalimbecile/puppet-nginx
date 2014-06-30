@@ -82,4 +82,16 @@ define nginx_passenger::install {
     cwd     => '/usr/local/src',
     unless  => 'test -d /usr/local/src/nginx-1.6.0',
   }
+
+  exec { 'passenger-download':
+    command => 'fetch http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.45.tar.gz',
+    cwd     => '/usr/local/src',
+    unless  => 'test -f /usr/local/src/passenger-4.0.45.tar.gz',
+  }
+
+  exec { 'passenger-extract':
+    command => 'tar zxf passenger-4.0.45.tar.gz',
+    cwd     => '/usr/local/src',
+    unless  => 'test -d /usr/local/src/passenger-4.0.45',
+  }
 }
