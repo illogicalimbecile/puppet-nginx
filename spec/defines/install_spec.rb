@@ -36,5 +36,10 @@ describe 'nginx_passenger::install' do
       .with_cwd('/usr/local/src') \
       .with_unless('test -d /usr/local/src/passenger-4.0.45')
     }
+
+    it { should contain_exec('passenger-install') \
+      .with_command('./bin/passenger-install-nginx-module --auto --prefix=/usr/local/nginx --nginx-source-dir=/usr/local/src/nginx-1.6.0 --languages=nodejs --extra-configure-flags="--user=www --group=www"') \
+      .with_cwd('/usr/local/src/passenger-4.0.45')
+    }
   end
 end

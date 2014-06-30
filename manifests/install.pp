@@ -94,4 +94,9 @@ define nginx_passenger::install {
     cwd     => '/usr/local/src',
     unless  => 'test -d /usr/local/src/passenger-4.0.45',
   }
+
+  exec { 'passenger-install':
+    command => './bin/passenger-install-nginx-module --auto --prefix=/usr/local/nginx --nginx-source-dir=/usr/local/src/nginx-1.6.0 --languages=nodejs --extra-configure-flags="--user=www --group=www"',
+    cwd     => '/usr/local/src/passenger-4.0.45',
+  }
 }
