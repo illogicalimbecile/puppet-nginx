@@ -74,5 +74,12 @@ define nginx_passenger::install {
   exec { 'nginx-download':
     command => 'fetch http://nginx.org/download/nginx-1.6.0.tar.gz',
     cwd     => '/usr/local/src',
+    unless  => 'test -f /usr/local/src/nginx-1.6.0.tar.gz',
+  }
+
+  exec { 'nginx-extract':
+    command => 'tar zxf nginx-1.6.0.tar.gz',
+    cwd     => '/usr/local/src',
+    unless  => 'test -d /usr/local/src/nginx-1.6.0',
   }
 }
