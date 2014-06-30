@@ -99,4 +99,28 @@ define nginx_passenger::install {
     command => './bin/passenger-install-nginx-module --auto --prefix=/usr/local/nginx --nginx-source-dir=/usr/local/src/nginx-1.6.0 --languages=nodejs --extra-configure-flags="--user=www --group=www"',
     cwd     => '/usr/local/src/passenger-4.0.45',
   }
+
+  file { 'nginx-conf':
+    ensure => 'link',
+    path   => '/usr/local/etc/nginx',
+    target => '/usr/local/nginx/conf',
+  }
+
+  file { 'nginx-bin':
+    ensure => 'link',
+    path   => '/usr/local/sbin/nginx',
+    target => '/usr/local/nginx/sbin/nginx',
+  }
+
+  file { 'nginx-pid':
+    ensure => 'link',
+    path   => '/var/run/nginx.pid',
+    target => '/usr/local/nginx/logs/nginx.pid',
+  }
+
+  file { 'nginx-logs':
+    ensure => 'link',
+    path   => '/var/log/nginx',
+    target => '/usr/local/nginx/logs',
+  }
 }
