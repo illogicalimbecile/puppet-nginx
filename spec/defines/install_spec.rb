@@ -65,5 +65,13 @@ describe 'nginx_passenger::install' do
       .with_path('/var/log/nginx') \
       .with_target('/usr/local/nginx/logs')
     }
+
+    it { should contain_file('nginx-init') \
+      .with_ensure('file') \
+      .with_path('/usr/local/etc/rc.d/nginx') \
+      .with_owner('root') \
+      .with_group('wheel') \
+      .with_mode('0555')
+    }
   end
 end

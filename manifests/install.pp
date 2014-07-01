@@ -65,7 +65,7 @@
 #
 define nginx_passenger::install {
   file { '/usr/local/src':
-    ensure => 'directory',
+    ensure => directory,
     owner  => 'root',
     group  => 'wheel',
     mode   => '0755',
@@ -101,26 +101,35 @@ define nginx_passenger::install {
   }
 
   file { 'nginx-conf':
-    ensure => 'link',
+    ensure => link,
     path   => '/usr/local/etc/nginx',
     target => '/usr/local/nginx/conf',
   }
 
   file { 'nginx-bin':
-    ensure => 'link',
+    ensure => link,
     path   => '/usr/local/sbin/nginx',
     target => '/usr/local/nginx/sbin/nginx',
   }
 
   file { 'nginx-pid':
-    ensure => 'link',
+    ensure => link,
     path   => '/var/run/nginx.pid',
     target => '/usr/local/nginx/logs/nginx.pid',
   }
 
   file { 'nginx-logs':
-    ensure => 'link',
+    ensure => link,
     path   => '/var/log/nginx',
     target => '/usr/local/nginx/logs',
+  }
+
+  file { 'nginx-init':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'wheel',
+    mode    => '0555',
+    path    => '/usr/local/etc/rc.d/nginx',
+    content => template("${module_name}/nginx.erb"),
   }
 }
