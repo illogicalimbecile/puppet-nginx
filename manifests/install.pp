@@ -33,7 +33,7 @@
 #
 # [*custom_package_location*]
 #   Specify the location of a custom package for nginx and passenger
-#   installation. (undef)
+#   installation. If this parameter is defined all others are ignored. (undef)
 #
 # === Examples
 #
@@ -64,9 +64,10 @@
 # Copyright 2014 Advanced Instructional Systems, Inc., unless otherwise noted.
 #
 define nginx_passenger::install (
-  $build_dir = '/usr/local/src',
-  $nginx_version = '1.6.0',
-  $passenger_version = '4.0.45',
+  $build_dir             = '/usr/local/src',
+  $nginx_version         = '1.6.0',
+  $passenger_version     = '4.0.45',
+  $extra_configure_flags = '--user=www --group=www',
 ) {
 
   file { $build_dir:
@@ -101,7 +102,7 @@ define nginx_passenger::install (
   }
 
   exec { 'passenger-install':
-    command => "./bin/passenger-install-nginx-module --auto --prefix=/usr/local/nginx --nginx-source-dir=${build_dir}/nginx-${nginx_version} --languages=nodejs --extra-configure-flags=\"--user=www --group=www\"",
+    command => "./bin/passenger-install-nginx-module --auto --prefix=/usr/local/nginx --nginx-source-dir=${build_dir}/nginx-${nginx_version} --languages=nodejs --extra-configure-flags=\"${extra_configure_flags}\"",
     cwd     => "${build_dir}/passenger-${passenger_version}",
   }
 

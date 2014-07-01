@@ -151,4 +151,12 @@ describe 'nginx_passenger::install' do
       .with_cwd('/usr/local/src/passenger-4.0.36')
     }
   end
+
+  context 'with given extra_configure_flags' do
+    let(:params) {{ :extra_configure_flags => '--with-pcre --with-ipv6' }}
+
+    it { should contain_exec('passenger-install') \
+      .with_command('./bin/passenger-install-nginx-module --auto --prefix=/usr/local/nginx --nginx-source-dir=/usr/local/src/nginx-1.6.0 --languages=nodejs --extra-configure-flags="--with-pcre --with-ipv6"')
+    }
+  end
 end
