@@ -114,4 +114,22 @@ describe 'nginx_passenger::install' do
       .with_cwd('/opt/src/passenger-4.0.45')
     }
   end
+
+  context 'with a given nginx_version' do
+    let(:params) {{ :nginx_version => '1.7.2' }}
+
+    it { should contain_exec('nginx-download') \
+      .with_command('fetch http://nginx.org/download/nginx-1.7.2.tar.gz') \
+      .with_unless('test -f /usr/local/src/nginx-1.7.2.tar.gz')
+    }
+
+    it { should contain_exec('nginx-extract') \
+      .with_command('tar zxf nginx-1.7.2.tar.gz') \
+      .with_unless('test -d /usr/local/src/nginx-1.7.2')
+    }
+
+    it { should contain_exec('passenger-install') \
+      .with_command('./bin/passenger-install-nginx-module --auto --prefix=/usr/local/nginx --nginx-source-dir=/usr/local/src/nginx-1.7.2 --languages=nodejs --extra-configure-flags="--user=www --group=www"')
+    }
+  end
 end

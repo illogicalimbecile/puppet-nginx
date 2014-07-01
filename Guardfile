@@ -7,7 +7,7 @@ guard :rspec do
   watch(%r{^spec/.+_spec\.rb$})
   watch('spec/spec_helper.rb')  { "spec" }
   watch('spec/spec.opts')       { "spec" }
-  watch(%r{^manifests/.+\.rb$}) { "spec" }
-  watch(%r{^templates/.+\.rb$}) { "spec" }
+  watch(%r{^manifests/.+\.pp$}) { "spec" }
+  watch(%r{^templates/.+\.erb$}) { "spec" }
   watch(%r{^lib/.+\.rb$})       { "spec/functions" }
 end

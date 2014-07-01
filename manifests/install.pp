@@ -65,6 +65,7 @@
 #
 define nginx_passenger::install (
   $build_dir = '/usr/local/src',
+  $nginx_version = '1.6.0',
 ) {
 
   file { $build_dir:
@@ -75,15 +76,15 @@ define nginx_passenger::install (
   }
 
   exec { 'nginx-download':
-    command => 'fetch http://nginx.org/download/nginx-1.6.0.tar.gz',
+    command => "fetch http://nginx.org/download/nginx-${nginx_version}.tar.gz",
     cwd     => $build_dir,
-    unless  => "test -f ${build_dir}/nginx-1.6.0.tar.gz",
+    unless  => "test -f ${build_dir}/nginx-${nginx_version}.tar.gz",
   }
 
   exec { 'nginx-extract':
-    command => 'tar zxf nginx-1.6.0.tar.gz',
+    command => "tar zxf nginx-${nginx_version}.tar.gz",
     cwd     => $build_dir,
-    unless  => "test -d ${build_dir}/nginx-1.6.0",
+    unless  => "test -d ${build_dir}/nginx-${nginx_version}",
   }
 
   exec { 'passenger-download':
@@ -99,7 +100,7 @@ define nginx_passenger::install (
   }
 
   exec { 'passenger-install':
-    command => "./bin/passenger-install-nginx-module --auto --prefix=/usr/local/nginx --nginx-source-dir=${build_dir}/nginx-1.6.0 --languages=nodejs --extra-configure-flags=\"--user=www --group=www\"",
+    command => "./bin/passenger-install-nginx-module --auto --prefix=/usr/local/nginx --nginx-source-dir=${build_dir}/nginx-${nginx_version} --languages=nodejs --extra-configure-flags=\"--user=www --group=www\"",
     cwd     => "${build_dir}/passenger-4.0.45",
   }
 
