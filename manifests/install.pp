@@ -66,6 +66,7 @@
 define nginx_passenger::install (
   $build_dir = '/usr/local/src',
   $nginx_version = '1.6.0',
+  $passenger_version = '4.0.45',
 ) {
 
   file { $build_dir:
@@ -88,20 +89,20 @@ define nginx_passenger::install (
   }
 
   exec { 'passenger-download':
-    command => 'fetch http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.45.tar.gz',
+    command => "fetch http://s3.amazonaws.com/phusion-passenger/releases/passenger-${passenger_version}.tar.gz",
     cwd     => $build_dir,
-    unless  => "test -f ${build_dir}/passenger-4.0.45.tar.gz",
+    unless  => "test -f ${build_dir}/passenger-${passenger_version}.tar.gz",
   }
 
   exec { 'passenger-extract':
-    command => 'tar zxf passenger-4.0.45.tar.gz',
+    command => "tar zxf passenger-${passenger_version}.tar.gz",
     cwd     => $build_dir,
-    unless  => "test -d ${build_dir}/passenger-4.0.45",
+    unless  => "test -d ${build_dir}/passenger-${passenger_version}",
   }
 
   exec { 'passenger-install':
     command => "./bin/passenger-install-nginx-module --auto --prefix=/usr/local/nginx --nginx-source-dir=${build_dir}/nginx-${nginx_version} --languages=nodejs --extra-configure-flags=\"--user=www --group=www\"",
-    cwd     => "${build_dir}/passenger-4.0.45",
+    cwd     => "${build_dir}/passenger-${passenger_version}",
   }
 
   file { 'nginx-conf':

@@ -132,4 +132,23 @@ describe 'nginx_passenger::install' do
       .with_command('./bin/passenger-install-nginx-module --auto --prefix=/usr/local/nginx --nginx-source-dir=/usr/local/src/nginx-1.7.2 --languages=nodejs --extra-configure-flags="--user=www --group=www"')
     }
   end
+
+  context 'with a given passenger_version' do
+    let(:params) {{ :passenger_version => '4.0.36' }}
+
+    it { should contain_exec('passenger-download') \
+      .with_command('fetch http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.36.tar.gz') \
+      .with_unless('test -f /usr/local/src/passenger-4.0.36.tar.gz')
+    }
+
+    it { should contain_exec('passenger-extract') \
+      .with_command('tar zxf passenger-4.0.36.tar.gz') \
+      .with_unless('test -d /usr/local/src/passenger-4.0.36')
+    }
+
+    it { should contain_exec('passenger-install') \
+      .with_command('./bin/passenger-install-nginx-module --auto --prefix=/usr/local/nginx --nginx-source-dir=/usr/local/src/nginx-1.6.0 --languages=nodejs --extra-configure-flags="--user=www --group=www"') \
+      .with_cwd('/usr/local/src/passenger-4.0.36')
+    }
+  end
 end
