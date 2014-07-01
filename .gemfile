@@ -10,3 +10,5 @@ gem 'puppet-syntax'
 gem 'rspec-puppet'
 gem 'rake'
 gem 'puppetlabs_spec_helper'
+gem 'guard-rspec', require: false
+gem 'growl', require: false
