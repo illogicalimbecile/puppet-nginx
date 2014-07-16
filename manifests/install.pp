@@ -67,6 +67,7 @@ define nginx_passenger::install (
   $build_dir             = '/usr/local/src',
   $nginx_version         = '1.6.0',
   $passenger_version     = '4.0.45',
+  $passenger_languages   = 'nodejs',
   $extra_configure_flags = '--user=www --group=www',
 ) {
 
@@ -102,7 +103,7 @@ define nginx_passenger::install (
   }
 
   exec { 'passenger-install':
-    command => "./bin/passenger-install-nginx-module --auto --prefix=/usr/local/nginx --nginx-source-dir=${build_dir}/nginx-${nginx_version} --languages=nodejs --extra-configure-flags=\"${extra_configure_flags}\"",
+    command => "./bin/passenger-install-nginx-module --auto --prefix=/usr/local/nginx --nginx-source-dir=${build_dir}/nginx-${nginx_version} --languages=${passenger_languages} --extra-configure-flags=\"${extra_configure_flags}\"",
     cwd     => "${build_dir}/passenger-${passenger_version}",
   }
 

@@ -159,4 +159,12 @@ describe 'nginx_passenger::install' do
       .with_command('./bin/passenger-install-nginx-module --auto --prefix=/usr/local/nginx --nginx-source-dir=/usr/local/src/nginx-1.6.0 --languages=nodejs --extra-configure-flags="--with-pcre --with-ipv6"')
     }
   end
+
+  context 'with given passenger_languages' do
+    let(:params) {{ :passenger_languages => 'ruby,nodejs' }}
+
+    it { should contain_exec('passenger-install') \
+      .with_command('./bin/passenger-install-nginx-module --auto --prefix=/usr/local/nginx --nginx-source-dir=/usr/local/src/nginx-1.6.0 --languages=ruby,nodejs --extra-configure-flags="--user=www --group=www"')
+    }
+  end
 end
